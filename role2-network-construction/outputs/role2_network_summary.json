@@ -1,0 +1,122 @@
+{
+  "source": "Role 1 prepared tables",
+  "main_network": {
+    "construction": "symmetric union k-nearest-neighbour respondent graph, positive centred correlations only",
+    "k": 9,
+    "nodes": 87,
+    "edges": 459,
+    "density": 0.1226944667201283,
+    "components": 1,
+    "min_degree": 9,
+    "max_degree": 16,
+    "mean_degree": 10.551724137931034,
+    "min_weight": 0.1426793435530566,
+    "max_weight": 0.6395287577657963,
+    "mean_weight": 0.261223728676554
+  },
+  "topic_layers": {
+    "T": {
+      "construction": "T topic kNN",
+      "k": 9,
+      "nodes": 85,
+      "edges": 457,
+      "density": 0.1280112044817927,
+      "components": 1,
+      "min_degree": 9,
+      "max_degree": 15,
+      "mean_degree": 10.75294117647059,
+      "min_weight": 0.24623553282227695,
+      "max_weight": 0.83794410585766,
+      "mean_weight": 0.4647811602554021
+    },
+    "E": {
+      "construction": "E topic kNN",
+      "k": 9,
+      "nodes": 85,
+      "edges": 467,
+      "density": 0.130812324929972,
+      "components": 1,
+      "min_degree": 9,
+      "max_degree": 17,
+      "mean_degree": 10.988235294117647,
+      "min_weight": 0.2827055863305282,
+      "max_weight": 0.9536189093255095,
+      "mean_weight": 0.500975324225376
+    },
+    "S": {
+      "construction": "S topic kNN",
+      "k": 9,
+      "nodes": 85,
+      "edges": 472,
+      "density": 0.13221288515406163,
+      "components": 1,
+      "min_degree": 9,
+      "max_degree": 19,
+      "mean_degree": 11.105882352941176,
+      "min_weight": 0.21975164249763407,
+      "max_weight": 1.0000000000000002,
+      "mean_weight": 0.4913162991799394
+    },
+    "V": {
+      "construction": "V topic kNN",
+      "k": 9,
+      "nodes": 85,
+      "edges": 487,
+      "density": 0.13641456582633052,
+      "components": 1,
+      "min_degree": 9,
+      "max_degree": 26,
+      "mean_degree": 11.458823529411765,
+      "min_weight": 0.250093055771353,
+      "max_weight": 1.0000000000000002,
+      "mean_weight": 0.518458118195821
+    }
+  },
+  "statement_network": {
+    "construction": "exploratory Spearman statement graph, abs(rho) >= 0.35",
+    "k": null,
+    "nodes": 60,
+    "edges": 189,
+    "density": 0.10677966101694915,
+    "components": 13,
+    "min_degree": 0,
+    "max_degree": 22,
+    "mean_degree": 6.3,
+    "min_weight": 0.35150470961051944,
+    "max_weight": 0.6515259709690223,
+    "mean_weight": 0.41580917191384587
+  },
+  "outputs": {
+    "tables": [
+      "item_edges_visual.csv",
+      "item_nodes_visual.csv",
+      "item_spearman_correlations.csv",
+      "respondent_edges_visual.csv",
+      "respondent_nodes_visual.csv",
+      "topic_layer_E_edges.csv",
+      "topic_layer_E_nodes.csv",
+      "topic_layer_S_edges.csv",
+      "topic_layer_S_nodes.csv",
+      "topic_layer_T_edges.csv",
+      "topic_layer_T_nodes.csv",
+      "topic_layer_V_edges.csv",
+      "topic_layer_V_nodes.csv"
+    ],
+    "graphs": [
+      "exploratory_statement_network.gexf",
+      "respondent_opinion_network.gexf",
+      "respondent_opinion_network.graphml",
+      "topic_layer_E.gexf",
+      "topic_layer_S.gexf",
+      "topic_layer_T.gexf",
+      "topic_layer_V.gexf"
+    ],
+    "figures": [
+      "fig1_respondent_network.png",
+      "fig2_backbone_diagnostics.png",
+      "fig3_topic_layers.png",
+      "fig4_statement_network.png",
+      "fig5_network_heatmaps.png"
+    ]
+  }
+}
