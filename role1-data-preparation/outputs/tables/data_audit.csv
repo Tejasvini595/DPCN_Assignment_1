@@ -1,0 +1,8 @@
+check,finding,decision
+Fully blank responses,"5 (IDs 44, 60, 68, 73, 78)",Dropped -> 91 usable responses
+Answered Technology only,"4 (IDs 30, 39, 77, 87)",Excluded from the respondent network; usable for T-T statement pairs
+Environment block missing,"2 (IDs 79, 123)",Kept in the main network (>= 45/60); excluded from topic layers
+Scattered item non-response,"17 respondents, 1-4 items each",Kept; missing treated as zero deviation from the item mean
+Straight-lining (zero variance),0 respondents (min. within-person SD = 0.42),No exclusions needed
+Duplicate answer profiles,0,-
+Answer distribution (substantive),"Strongly Agree 43.1%, Agree 36.7%, Neutral 13.1%, Disagree 4.9%, Strongly Disagree 2.1%",Strong ceiling effect -> item-centring required
