@@ -73,11 +73,12 @@ def parallel_analysis(num, n_rep, seed):
     null95 = np.percentile(null, 95, axis=0)
     w, v = np.linalg.eigh(np.corrcoef(C.T))
     pc1 = v[:, -1] * np.sign(v[:, -1].sum())
+    above = ev > null95          # eigenvalues are descending, so the Trues form a prefix
     return {
         "eigenvalues": ev,
         "null_mean": null.mean(axis=0),
         "null_95": null95,
-        "n_significant": int(np.argmin(ev > null95)),
+        "n_significant": int(np.argmin(above)) if not above.all() else int(len(ev)),
         "pc1_var_explained": float(ev[0] / ev.sum()),
         "pc1_same_sign_fraction": float(max((pc1 > 0).mean(), (pc1 < 0).mean())),
         "pc1_corr_intensity": float(np.corrcoef(C @ pc1, num.mean(axis=1))[0, 1]),
@@ -97,7 +98,8 @@ def audit_table(q, tech_only, no_env, minor, minor_missing, pct):
          "finding": f"{len(no_env)} (IDs {', '.join(map(str, no_env))})",
          "decision": "Kept in the main network (>= 45/60); excluded from topic layers"},
         {"check": "Scattered item non-response",
-         "finding": f"{len(minor)} respondents, {min(minor_missing)}-{max(minor_missing)} items each",
+         "finding": (f"{len(minor)} respondents, {min(minor_missing)}-{max(minor_missing)} items each"
+                     if minor else "0 respondents"),
          "decision": "Kept; missing treated as zero deviation from the item mean"},
         {"check": "Straight-lining (zero variance)",
          "finding": f"{q['straightliners']} respondents (min. within-person SD = {q['min_respondent_sd']:.2f})",
@@ -128,7 +130,8 @@ def main():
 
     partial = {int(k): v for k, v in q["partial_respondents"].items()}
     tech_only = sorted(k for k, v in partial.items() if v["E"] == 0 and v["S"] == 0 and v["V"] == 0)
-    no_env = sorted(k for k, v in partial.items() if k not in tech_only and v["V"] <= 5)
+    no_env = sorted(k for k, v in partial.items()
+                    if k not in tech_only and v["V"] <= cfg.MAX_ANSWERED_SKIPPED_BLOCK)
     minor = sorted(k for k in partial if k not in tech_only and k not in no_env)
     minor_missing = [60 - sum(partial[k].values()) for k in minor]
 

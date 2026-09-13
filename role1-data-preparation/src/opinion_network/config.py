@@ -36,6 +36,10 @@ DOMAIN_COLORS = {"T": "#3B6FB6", "E": "#E08A2E", "S": "#8E5EA2", "V": "#3E9651"}
 MIN_ANSWERED_TOTAL = 45   # >= 75% of 60 items for the aggregate network
 MIN_ANSWERED_LAYER = 12   # >= 80% of 15 items for a topic layer
 
+# A domain answered <= this many of its 15 items counts as a skipped block rather
+# than scattered non-response (audit classification only; no effect on inclusion).
+MAX_ANSWERED_SKIPPED_BLOCK = 5
+
 # ------------------------------------------------- network construction
 # k for the symmetric k-nearest-neighbour backbone; None -> round(sqrt(n))
 # Role 1 recommends this default; Role 2 owns the final choice and Role 3 the
