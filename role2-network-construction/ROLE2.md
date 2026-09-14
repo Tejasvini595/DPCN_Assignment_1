@@ -50,6 +50,14 @@ Role 2 also constructs two supporting views from the same Role 1 handoff:
 - Topic-layer respondent networks for Technology, Education, Ethics & Society and
   Environment. These use the same k-NN construction within each 15-item domain and
   keep the 85 respondents with sufficient answers in every topic.
+
+  Note: within a single 15-item domain (especially the near-consensual Environment
+  layer), many respondents end up with exactly-tied similarity scores. Which of several
+  tied candidates fills the last k-NN slot can vary slightly by machine/BLAS library, so
+  a handful of topic-layer edges may differ between systems even when the code and
+  inputs are identical. This is a floating-point tie-break artefact, not a construction
+  error: aggregate properties (edge count, degree range, density) are unaffected and
+  reproduce exactly across runs.
 - An exploratory statement network where nodes are survey statements and edges are
   pairwise Spearman associations with `abs(rho) >= 0.35`. This is visual only; Role 3
   should apply formal FDR correction before treating statement edges as findings.

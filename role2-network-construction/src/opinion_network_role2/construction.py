@@ -260,7 +260,7 @@ def _clean_attrs(attrs: dict) -> dict:
     out = {}
     for key, value in attrs.items():
         if pd.isna(value):
-            out[key] = ""
+            continue  # omit missing attributes rather than writing "" into a numeric field
         elif isinstance(value, np.integer):
             out[key] = int(value)
         elif isinstance(value, np.floating):

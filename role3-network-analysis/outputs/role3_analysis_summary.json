@@ -1,0 +1,56 @@
+{
+  "communities": {
+    "n_communities": 7,
+    "modularity": 0.3714337360182133,
+    "sizes": [
+      10,
+      12,
+      18,
+      7,
+      11,
+      10,
+      19
+    ]
+  },
+  "global_metrics": {
+    "nodes": 87,
+    "edges": 459,
+    "density": 0.1226944667201283,
+    "components": 1,
+    "diameter_weighted": 2.594765387136476,
+    "avg_shortest_path_weighted": 1.5814683792549942,
+    "transitivity": 0.24900133155792276,
+    "avg_clustering_weighted": 0.10564907454930145,
+    "degree_assortativity": -0.02287496411514604,
+    "intensity_assortativity": 0.14335185458621813,
+    "modularity": 0.3714337360182133,
+    "n_communities": 7
+  },
+  "null_model": {
+    "n_rep": 200,
+    "observed_modularity": 0.3714337360182133,
+    "null_mean_modularity": 0.33759063389053184,
+    "null_sd_modularity": 0.015027211253007933,
+    "empirical_p_value": 0.015,
+    "null_mean_clustering": 0.09102330234771663,
+    "observed_clustering": 0.10564907454930145
+  },
+  "k_sensitivity": {
+    "k_range": [
+      4,
+      15
+    ],
+    "chosen_k": 9
+  },
+  "topic_layers": {
+    "mean_mantel_r_main_vs_topic": 0.4266356838920051,
+    "mean_nmi_main_vs_topic": 0.24858181850462963
+  },
+  "statement_network": {
+    "pairs_tested": 1770,
+    "naive_p_below_05": 652,
+    "fdr_significant": 432,
+    "role2_threshold_edges": 189,
+    "overlap_threshold_and_fdr": 189
+  }
+}

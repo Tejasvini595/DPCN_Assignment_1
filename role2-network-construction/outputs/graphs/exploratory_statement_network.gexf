@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2026-09-13">
-    <creator>NetworkX 3.4.2</creator>
+  <meta lastmodifieddate="2026-09-14">
+    <creator>NetworkX 3.6.1</creator>
   </meta>
   <graph defaultedgetype="undirected" mode="static" name="">
     <attributes mode="static" class="edge">
@@ -356,7 +356,7 @@
           <attvalue for="3" value="1.2790697674418603" />
           <attvalue for="4" value="0.6885918160535514" />
           <attvalue for="5" value="4" />
-          <attvalue for="6" value="1.6799221051112907" />
+          <attvalue for="6" value="1.6799221051112905" />
         </attvalues>
       </node>
       <node id="S02" label="S02">
@@ -378,7 +378,7 @@
           <attvalue for="3" value="1.264367816091954" />
           <attvalue for="4" value="0.703114699580061" />
           <attvalue for="5" value="7" />
-          <attvalue for="6" value="2.8029847728236255" />
+          <attvalue for="6" value="2.802984772823626" />
         </attvalues>
       </node>
       <node id="S04" label="S04">
@@ -389,7 +389,7 @@
           <attvalue for="3" value="1.1494252873563218" />
           <attvalue for="4" value="0.6543811168737942" />
           <attvalue for="5" value="6" />
-          <attvalue for="6" value="2.315481996547335" />
+          <attvalue for="6" value="2.3154819965473354" />
         </attvalues>
       </node>
       <node id="S05" label="S05">
@@ -444,7 +444,7 @@
           <attvalue for="3" value="1.4705882352941178" />
           <attvalue for="4" value="0.7842583967290087" />
           <attvalue for="5" value="22" />
-          <attvalue for="6" value="9.220833292966816" />
+          <attvalue for="6" value="9.220833292966818" />
         </attvalues>
       </node>
       <node id="S10" label="S10">
@@ -499,7 +499,7 @@
           <attvalue for="3" value="1.2976190476190477" />
           <attvalue for="4" value="0.7400672580699076" />
           <attvalue for="5" value="16" />
-          <attvalue for="6" value="6.704860178964098" />
+          <attvalue for="6" value="6.704860178964099" />
         </attvalues>
       </node>
       <node id="S15" label="S15">
@@ -565,7 +565,7 @@
           <attvalue for="3" value="1.372093023255814" />
           <attvalue for="4" value="0.7218052889037497" />
           <attvalue for="5" value="7" />
-          <attvalue for="6" value="3.1242367378053326" />
+          <attvalue for="6" value="3.124236737805332" />
         </attvalues>
       </node>
       <node id="V06" label="V06">
@@ -609,7 +609,7 @@
           <attvalue for="3" value="1.6" />
           <attvalue for="4" value="0.765769370041681" />
           <attvalue for="5" value="9" />
-          <attvalue for="6" value="3.959655284307938" />
+          <attvalue for="6" value="3.9596552843079373" />
         </attvalues>
       </node>
       <node id="V10" label="V10">
@@ -620,7 +620,7 @@
           <attvalue for="3" value="1.035294117647059" />
           <attvalue for="4" value="0.7236459401795066" />
           <attvalue for="5" value="15" />
-          <attvalue for="6" value="6.5922673113606045" />
+          <attvalue for="6" value="6.592267311360606" />
         </attvalues>
       </node>
       <node id="V11" label="V11">
@@ -642,7 +642,7 @@
           <attvalue for="3" value="1.119047619047619" />
           <attvalue for="4" value="0.6968654237008044" />
           <attvalue for="5" value="14" />
-          <attvalue for="6" value="6.154854556756797" />
+          <attvalue for="6" value="6.154854556756798" />
         </attvalues>
       </node>
       <node id="V13" label="V13">
@@ -675,7 +675,7 @@
           <attvalue for="3" value="1.5058823529411764" />
           <attvalue for="4" value="0.7760804287925429" />
           <attvalue for="5" value="16" />
-          <attvalue for="6" value="6.36559589911537" />
+          <attvalue for="6" value="6.365595899115369" />
         </attvalues>
       </node>
     </nodes>

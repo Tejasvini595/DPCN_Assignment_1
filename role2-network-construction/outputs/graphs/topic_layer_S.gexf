@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
-  <meta lastmodifieddate="2026-09-13">
-    <creator>NetworkX 3.4.2</creator>
+  <meta lastmodifieddate="2026-09-14">
+    <creator>NetworkX 3.6.1</creator>
   </meta>
   <graph defaultedgetype="undirected" mode="static" name="">
     <attributes mode="static" class="edge">
@@ -27,7 +27,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="5.09892715216024" />
+          <attvalue for="3" value="5.098927152160239" />
         </attvalues>
       </node>
       <node id="13" label="13">
@@ -43,7 +43,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="12" />
-          <attvalue for="3" value="6.412188853127651" />
+          <attvalue for="3" value="6.412188853127652" />
         </attvalues>
       </node>
       <node id="16" label="16">
@@ -59,7 +59,7 @@
           <attvalue for="0" value="13" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="7.327067870213195" />
+          <attvalue for="3" value="7.327067870213194" />
         </attvalues>
       </node>
       <node id="18" label="18">
@@ -83,7 +83,7 @@
           <attvalue for="0" value="6" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="4.003056050804372" />
+          <attvalue for="3" value="4.003056050804371" />
         </attvalues>
       </node>
       <node id="21" label="21">
@@ -139,7 +139,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="4.904465962165463" />
+          <attvalue for="3" value="4.904465962165462" />
         </attvalues>
       </node>
       <node id="35" label="35">
@@ -155,7 +155,7 @@
           <attvalue for="0" value="5" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="3.639327852037393" />
+          <attvalue for="3" value="3.6393278520373924" />
         </attvalues>
       </node>
       <node id="37" label="37">
@@ -163,7 +163,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="5.079183858825654" />
+          <attvalue for="3" value="5.079183858825653" />
         </attvalues>
       </node>
       <node id="38" label="38">
@@ -179,7 +179,7 @@
           <attvalue for="0" value="8" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="7.300324843253045" />
+          <attvalue for="3" value="7.300324843253046" />
         </attvalues>
       </node>
       <node id="41" label="41">
@@ -203,7 +203,7 @@
           <attvalue for="0" value="6" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="3.7820589218032716" />
+          <attvalue for="3" value="3.782058921803271" />
         </attvalues>
       </node>
       <node id="45" label="45">
@@ -219,7 +219,7 @@
           <attvalue for="0" value="6" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="4.621000825982302" />
+          <attvalue for="3" value="4.6210008259823026" />
         </attvalues>
       </node>
       <node id="48" label="48">
@@ -227,7 +227,7 @@
           <attvalue for="0" value="11" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="5.2563051361287325" />
+          <attvalue for="3" value="5.256305136128733" />
         </attvalues>
       </node>
       <node id="49" label="49">
@@ -251,7 +251,7 @@
           <attvalue for="0" value="7" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="5.495579046644325" />
+          <attvalue for="3" value="5.495579046644326" />
         </attvalues>
       </node>
       <node id="53" label="53">
@@ -267,7 +267,7 @@
           <attvalue for="0" value="8" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="5.087746925934491" />
+          <attvalue for="3" value="5.087746925934492" />
         </attvalues>
       </node>
       <node id="55" label="55">
@@ -275,7 +275,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="4.864249521475329" />
+          <attvalue for="3" value="4.86424952147533" />
         </attvalues>
       </node>
       <node id="56" label="56">
@@ -283,7 +283,7 @@
           <attvalue for="0" value="4" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="3.5252349371065654" />
+          <attvalue for="3" value="3.525234937106565" />
         </attvalues>
       </node>
       <node id="57" label="57">
@@ -315,7 +315,7 @@
           <attvalue for="0" value="12" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="5.998287667212539" />
+          <attvalue for="3" value="5.998287667212538" />
         </attvalues>
       </node>
       <node id="62" label="62">
@@ -323,7 +323,7 @@
           <attvalue for="0" value="15" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="15" />
-          <attvalue for="3" value="8.987753186452709" />
+          <attvalue for="3" value="8.98775318645271" />
         </attvalues>
       </node>
       <node id="63" label="63">
@@ -355,7 +355,7 @@
           <attvalue for="0" value="10" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="5.3351528187782815" />
+          <attvalue for="3" value="5.335152818778282" />
         </attvalues>
       </node>
       <node id="67" label="67">
@@ -363,7 +363,7 @@
           <attvalue for="0" value="12" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="12" />
-          <attvalue for="3" value="5.878141433746031" />
+          <attvalue for="3" value="5.8781414337460305" />
         </attvalues>
       </node>
       <node id="69" label="69">
@@ -387,7 +387,7 @@
           <attvalue for="0" value="7" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="4.752197180317985" />
+          <attvalue for="3" value="4.752197180317986" />
         </attvalues>
       </node>
       <node id="74" label="74">
@@ -403,7 +403,7 @@
           <attvalue for="0" value="13" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="19" />
-          <attvalue for="3" value="9.001372961025785" />
+          <attvalue for="3" value="9.001372961025787" />
         </attvalues>
       </node>
       <node id="81" label="81">
@@ -411,7 +411,7 @@
           <attvalue for="0" value="15" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="15" />
-          <attvalue for="3" value="9.656584281076741" />
+          <attvalue for="3" value="9.65658428107674" />
         </attvalues>
       </node>
       <node id="82" label="82">
@@ -427,7 +427,7 @@
           <attvalue for="0" value="8" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="4.109733911174159" />
+          <attvalue for="3" value="4.109733911174158" />
         </attvalues>
       </node>
       <node id="84" label="84">
@@ -467,7 +467,7 @@
           <attvalue for="0" value="18" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="18" />
-          <attvalue for="3" value="11.53121641267538" />
+          <attvalue for="3" value="11.531216412675382" />
         </attvalues>
       </node>
       <node id="91" label="91">
@@ -491,7 +491,7 @@
           <attvalue for="0" value="5" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="3.984977457064346" />
+          <attvalue for="3" value="3.9849774570643453" />
         </attvalues>
       </node>
       <node id="94" label="94">
@@ -507,7 +507,7 @@
           <attvalue for="0" value="11" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="6.348489211237204" />
+          <attvalue for="3" value="6.3484892112372036" />
         </attvalues>
       </node>
       <node id="97" label="97">
@@ -515,7 +515,7 @@
           <attvalue for="0" value="5" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="3.2614763568147387" />
+          <attvalue for="3" value="3.261476356814739" />
         </attvalues>
       </node>
       <node id="99" label="99">
@@ -531,7 +531,7 @@
           <attvalue for="0" value="5" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="12" />
-          <attvalue for="3" value="6.433309129147024" />
+          <attvalue for="3" value="6.433309129147025" />
         </attvalues>
       </node>
       <node id="102" label="102">
@@ -539,7 +539,7 @@
           <attvalue for="0" value="9" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="6.229318133318585" />
+          <attvalue for="3" value="6.229318133318584" />
         </attvalues>
       </node>
       <node id="103" label="103">
@@ -547,7 +547,7 @@
           <attvalue for="0" value="8" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="9" />
-          <attvalue for="3" value="4.773804695327548" />
+          <attvalue for="3" value="4.773804695327549" />
         </attvalues>
       </node>
       <node id="104" label="104">
@@ -563,7 +563,7 @@
           <attvalue for="0" value="13" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="13" />
-          <attvalue for="3" value="7.375754455307945" />
+          <attvalue for="3" value="7.375754455307946" />
         </attvalues>
       </node>
       <node id="106" label="106">
@@ -571,7 +571,7 @@
           <attvalue for="0" value="7" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="3.586115305223713" />
+          <attvalue for="3" value="3.5861153052237125" />
         </attvalues>
       </node>
       <node id="108" label="108">
@@ -627,7 +627,7 @@
           <attvalue for="0" value="8" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="11" />
-          <attvalue for="3" value="4.134779732265687" />
+          <attvalue for="3" value="4.134779732265688" />
         </attvalues>
       </node>
       <node id="116" label="116">
@@ -675,7 +675,7 @@
           <attvalue for="0" value="7" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="10" />
-          <attvalue for="3" value="4.260846947818125" />
+          <attvalue for="3" value="4.260846947818126" />
         </attvalues>
       </node>
       <node id="125" label="125">
@@ -691,7 +691,7 @@
           <attvalue for="0" value="16" />
           <attvalue for="1" value="S" />
           <attvalue for="2" value="16" />
-          <attvalue for="3" value="10.87295456127564" />
+          <attvalue for="3" value="10.872954561275641" />
         </attvalues>
       </node>
     </nodes>
