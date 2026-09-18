@@ -13,7 +13,7 @@ tables, `item_edges_visual.csv` (exploratory statement network); and
 analyses, which need to rebuild the construction under controlled conditions rather
 than read a fixed graph).
 
-**Code:** `run_role3.py`, `src/opinion_network_role3/{analysis,plots}.py`, 6 unit
+**Code:** `run_role3.py`, `src/opinion_network_role3/{analysis,plots}.py`, 10 unit
 tests in `tests/`.
 
 ---
@@ -30,6 +30,8 @@ tests in `tests/`.
 | Do opinion camps hold across topics? | Two independent tests on the 85 respondents common to all four topic layers: (a) **Mantel test** — correlation between each pair of layers' *full* (unsparsified) similarity matrices, significance from 999 label permutations; (b) **NMI** between each pair's Louvain community partition. |
 | Are the exploratory statement-network edges real? | Recomputed pairwise Spearman ρ with p-values for all 1,770 item pairs, applied Benjamini–Hochberg FDR correction (α = 0.05), and checked which of Role 2's `\|ρ\|≥0.35` edges actually survive. |
 | Does enthusiasm cluster in the network? | Pearson correlation between each centrality metric and the node attributes `intensity` (mean agreement) and `distance_to_class_mean` (atypicality), both handed off from Role 1/2. |
+| Do the survey's own T/E/S/V categories match how opinions actually cluster? | Louvain community detection run directly on the FDR-corrected statement network (§2.5), then a confusion matrix + NMI between the algorithmic communities and the survey's predefined domain labels — the algorithm never sees the domain labels. |
+| How much do "opinion camps" really dissolve at the topic level? | An alluvial (Sankey) diagram tracking, respondent by respondent, which Technology-layer / Education-layer community they land in given their Main-network community — a visual counterpart to the Mantel/NMI numbers in §2.4. |
 
 All randomness (null-model shuffles, Louvain, Mantel permutations, layout) is
 seeded at 42, matching Role 1 and Role 2. Full numbers are in
@@ -112,6 +114,38 @@ grows (more edges wash out structure) — k = 9 sits past the steepest early dro
 - 49 of 87 respondents (56%) have participation coefficient > 0.62, the conventional
   "connector" cutoff — most respondents split their ties across communities rather
   than concentrating them in one.
+
+### 2.8 Statement network's own community structure vs. the survey's categories
+(`outputs/tables/statement_domain_confusion.csv`, `statement_community_membership.csv`)
+
+Louvain run directly on the FDR-corrected statement network (60 items, 432 edges,
+§2.5) finds 7 communities, modularity 0.207, and **NMI = 0.56** against the
+survey's own T/E/S/V labels — moderate-to-substantial agreement, not perfect.
+The confusion matrix shows *why*: Education (13/15 items in one community),
+Ethics & Society (11/15), and Environment (12/15) each collapse almost entirely
+into a single dominant algorithmic community, but **Technology is the domain
+that breaks the pattern** — its 15 items scatter across six different
+communities (2, 7, 3, 0, 1, 1, 1), never dominating any single one.
+
+| Survey domain | Items in its largest algorithmic community | Community |
+|---|---|---|
+| Education | 13 / 15 | C2 |
+| Ethics & Society | 11 / 15 | C4 |
+| Environment | 12 / 15 | C6 |
+| Technology | 7 / 15 | C1 |
+
+### 2.9 Cross-domain community flow (`outputs/tables/community_flow_main_to_{T,E}.csv`)
+
+Sankey/alluvial flow counts of how each Main-network community's respondents
+redistribute into the Technology-layer and Education-layer communities — the
+row-by-row data behind Figure 9. Most Main communities fragment substantially:
+6 of 7 split across 2–5 different Technology communities and 2–4 different
+Education communities, with no dominant destination. The one exception is
+Main community 3 (the smallest, n=7, also the highest-intensity group,
+§2.3/community_summary), whose members land in a *single* Education
+community — but even that community still splits across 2 different
+Technology communities, so no Main community holds together across **both**
+topics simultaneously.
 
 ---
 
@@ -202,6 +236,34 @@ no sharp elbow that would single out one "correct" k. Role 1's `round(√87) = 9
 heuristic sits in the middle of this range, past the steepest early drop in
 modularity, which supports it as a reasonable default rather than an arbitrary one.
 
+### 3.8 The survey's own categories mostly — but not entirely — match how opinions cluster
+
+Running Louvain directly on the FDR-corrected statement network, without ever
+telling it which item belongs to which domain, recovers the survey's own
+T/E/S/V structure moderately well (NMI = 0.56): Education, Ethics & Society,
+and Environment each collapse almost entirely into one dominant algorithmic
+community (13/15, 11/15, and 12/15 of their items respectively — Figure
+`fig8_statement_communities.png`). **Technology is the exception** — its 15
+items scatter across six different communities with no dominant one (at most
+7/15 in any single community). This converges with every other Technology
+finding in this report (§3.3, §3.4's Mantel results): Technology attitudes are
+not one coherent bloc of belief the way Education, Ethics, and Environment
+attitudes are; individual Technology statements associate more with statements
+in *other* domains than with each other.
+
+### 3.9 Community dissolution across topics, made visible
+
+Figure `fig9_community_flow.png` gives the direct visual counterpart to §3.2's
+Mantel/NMI numbers. Six of the seven Main-network communities each split
+across 2–5 different communities in the Technology layer and 2–4 in the
+Education layer, with no single destination dominating — the thick, orderly
+bands on the left dissolve into a criss-crossing tangle on the right. The one
+partial exception, the smallest and most agreeable Main community (n=7, §2.3),
+lands entirely within one Education community but still splits across two
+Technology communities — confirming that **no Main-network community holds
+together across both topics simultaneously**, reinforcing §3.2's conclusion
+from a second, independent angle.
+
 ---
 
 ## 4. Limitations
@@ -229,6 +291,12 @@ modularity, which supports it as a reasonable default rather than an arbitrary o
    intensity/position correlations in §3.4 could shift somewhat at a different k,
    though §3.7 shows the network's qualitative structure is stable across the
    4–15 range.
+6. **The statement-network Louvain result (§3.8) inherits the FDR network's own
+   limitation** (#3 above) and has lower modularity (0.207) than the main
+   respondent network's (0.371) — the 7 algorithmic item-communities are a
+   real but comparatively weaker structure, appropriate for the qualitative
+   "does this roughly match the domains" question asked here, not for strong
+   claims about a definitive alternative item taxonomy.
 
 ---
 
@@ -263,4 +331,13 @@ cross-community "connectors." Finally, applying formal Benjamini–Hochberg
 correction to the 1,770-pair exploratory statement network shows all 189 of Role
 2's visually-thresholded edges are statistically robust, and identifies 243
 additional weaker-but-significant item correlations that the simple magnitude
-cutoff missed.
+cutoff missed. Two further checks reinforce the topic-specificity finding: an
+alluvial diagram tracking respondents from their Main-network community into
+their Technology- and Education-layer communities shows those communities
+fragmenting into a criss-crossing tangle rather than staying intact, and
+running Louvain directly on the statement network (never told which item
+belongs to which domain) recovers the survey's own categories only moderately
+well (NMI = 0.56) — Education, Ethics, and Environment each collapse into one
+dominant algorithmic community, but Technology's items scatter across six,
+confirming Technology is the domain where individual attitudes least resemble
+a single coherent bloc.

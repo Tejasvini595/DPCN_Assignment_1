@@ -50,6 +50,15 @@ across topics, and what does the network reveal about class opinions.
    atypicality (both handed off from Role 1/2 as node attributes) against every
    centrality metric, to test Role 1's open question of whether enthusiasm clusters
    in the network.
+8. **Statement-network community structure** - runs Louvain directly on the
+   FDR-corrected statement network (never told which item belongs to which domain)
+   and compares the result against the survey's own T/E/S/V labels via a confusion
+   matrix and NMI, to test whether the questionnaire's categories match how opinions
+   actually cluster.
+9. **Cross-domain community flow** - an alluvial/Sankey diagram tracking respondents
+   from their Main-network community into their Technology-layer and Education-layer
+   communities, as a visual counterpart to the Mantel/NMI finding that opinion camps
+   are topic-specific rather than general.
 
 See `ROLE3.md` for the full write-up of methods, all key metrics, and findings.
 
@@ -65,6 +74,10 @@ outputs/tables/topic_layer_mantel.csv
 outputs/tables/topic_layer_nmi.csv
 outputs/tables/statement_fdr_edges.csv
 outputs/tables/intensity_position_correlations.csv
+outputs/tables/statement_domain_confusion.csv
+outputs/tables/statement_community_membership.csv
+outputs/tables/community_flow_main_to_T.csv
+outputs/tables/community_flow_main_to_E.csv
 outputs/figures/fig1_communities.png
 outputs/figures/fig2_null_model.png
 outputs/figures/fig3_k_sensitivity.png
@@ -72,6 +85,8 @@ outputs/figures/fig4_node_roles.png
 outputs/figures/fig5_topic_layer_similarity.png
 outputs/figures/fig6_statement_fdr.png
 outputs/figures/fig7_intensity_vs_centrality.png
+outputs/figures/fig8_statement_communities.png
+outputs/figures/fig9_community_flow.png
 outputs/role3_analysis_summary.json
 ```
 

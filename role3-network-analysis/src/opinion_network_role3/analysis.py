@@ -325,7 +325,7 @@ def normalized_mutual_information(part_a: dict, part_b: dict, nodes) -> float:
 
 
 def compare_layers(paths: Role3Paths, sample: pd.DataFrame, main_similarity: pd.DataFrame,
-                    main_membership: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
+                    main_membership: dict) -> tuple[pd.DataFrame, pd.DataFrame, dict, list]:
     """Compare the main network against each Role-2 topic layer, and the topic
     layers against each other. Topic-layer graphs are Role 2's own GEXF
     exports (loaded as-is, not rebuilt); only the *full* per-domain similarity
@@ -354,7 +354,16 @@ def compare_layers(paths: Role3Paths, sample: pd.DataFrame, main_similarity: pd.
         mantel_rows.append({"layer_a": a, "layer_b": b, "mantel_r": r, "p_value": p, "n_common": n})
         nmi = normalized_mutual_information(partitions[a], partitions[b], common)
         nmi_rows.append({"layer_a": a, "layer_b": b, "nmi": nmi})
-    return pd.DataFrame(mantel_rows), pd.DataFrame(nmi_rows)
+    return pd.DataFrame(mantel_rows), pd.DataFrame(nmi_rows), partitions, common
+
+
+def sankey_flow(part_a: dict, part_b: dict, nodes) -> pd.DataFrame:
+    """Count how many nodes move from each part_a community to each part_b
+    community -- the underlying table for an alluvial/Sankey diagram.
+    """
+
+    rows = [{"source": part_a[n], "target": part_b[n]} for n in nodes]
+    return pd.DataFrame(rows).groupby(["source", "target"]).size().reset_index(name="count")
 
 
 # --------------------------------------------- statement network with FDR
@@ -439,3 +448,31 @@ def community_summary(centrality: pd.DataFrame, membership: dict) -> pd.DataFram
         mean_clustering=("clustering", "mean"),
     )
     return agg.sort_values("size", ascending=False)
+
+
+# ------------------------------------- statement network community structure
+
+def statement_network_communities(fdr_table: pd.DataFrame, codebook: pd.DataFrame):
+    """Run Louvain on the FDR-corrected statement network (all 60 items as
+    nodes, edges = pairs surviving Benjamini-Hochberg correction, weighted by
+    |rho|) and compare the algorithmic communities against the survey's own
+    T/E/S/V categories. Answers: if we didn't know the questionnaire's
+    domains, would the class's answers naturally group the same way?
+    """
+
+    G = nx.Graph()
+    G.add_nodes_from(codebook.index)
+    sig = fdr_table[fdr_table["fdr_significant"]]
+    for row in sig.itertuples(index=False):
+        G.add_edge(row.source, row.target, weight=abs(row.rho))
+
+    communities, membership, modularity = detect_communities(G, seed=SEED)
+    domain_of = {code: codebook.loc[code, "domain"] for code in G.nodes()}
+
+    confusion = pd.crosstab(
+        pd.Series(domain_of, name="survey_domain"),
+        pd.Series(membership, name="algorithmic_community"),
+    )
+    nmi = normalized_mutual_information(domain_of, membership, list(G.nodes()))
+
+    return G, membership, modularity, confusion, nmi

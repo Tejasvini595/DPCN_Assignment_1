@@ -17,6 +17,7 @@ from pathlib import Path
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
@@ -100,7 +101,8 @@ def main() -> None:
     print("[6] k-sensitivity scan done for k=4..15")
 
     # ---------------------------------------------- 7. topic-layer comparison
-    mantel_df, nmi_df = an.compare_layers(paths, data["network_sample"], data["similarity"], membership)
+    mantel_df, nmi_df, layer_partitions, common_respondents = an.compare_layers(
+        paths, data["network_sample"], data["similarity"], membership)
     mantel_df.to_csv(paths.tables / "topic_layer_mantel.csv", index=False)
     nmi_df.to_csv(paths.tables / "topic_layer_nmi.csv", index=False)
     M["topic_layers"] = {
@@ -137,6 +139,27 @@ def main() -> None:
     ipc.to_csv(paths.tables / "intensity_position_correlations.csv", index=False)
     print("[9] intensity/atypicality vs centrality correlations computed")
 
+    # ------------------------------- 10. Louvain on the statement network
+    item_G, item_membership, item_modularity, confusion, item_nmi = an.statement_network_communities(
+        fdr_table, data["codebook"])
+    confusion.to_csv(paths.tables / "statement_domain_confusion.csv")
+    pd.Series(item_membership, name="algorithmic_community").rename_axis("code").to_csv(
+        paths.tables / "statement_community_membership.csv")
+    M["statement_communities"] = {
+        "n_communities": len(set(item_membership.values())),
+        "modularity": item_modularity,
+        "nmi_vs_survey_domains": item_nmi,
+    }
+    print(f"[10] statement network: {len(set(item_membership.values()))} algorithmic communities, "
+          f"modularity={item_modularity:.3f}, NMI vs. survey domains={item_nmi:.3f}")
+
+    # --------------------------------- 11. cross-domain community flow (Sankey)
+    flow_t = an.sankey_flow(layer_partitions["Main"], layer_partitions["T"], common_respondents)
+    flow_e = an.sankey_flow(layer_partitions["Main"], layer_partitions["E"], common_respondents)
+    flow_t.to_csv(paths.tables / "community_flow_main_to_T.csv", index=False)
+    flow_e.to_csv(paths.tables / "community_flow_main_to_E.csv", index=False)
+    print("[11] cross-domain community flow tables written")
+
     # ------------------------------------------------------------ figures
     plots.fig_communities(G, pos, membership, modularity, paths.figures / "fig1_communities.png")
     plots.fig_null_model(null_df, modularity, paths.figures / "fig2_null_model.png")
@@ -146,7 +169,10 @@ def main() -> None:
     plots.fig_layer_similarity(mantel_df, nmi_df, paths.figures / "fig5_topic_layer_similarity.png")
     plots.fig_statement_fdr(fdr_table, threshold_edges, paths.figures / "fig6_statement_fdr.png")
     plots.fig_intensity_vs_centrality(centrality, paths.figures / "fig7_intensity_vs_centrality.png")
-    print("[10] figures written")
+    plots.fig_statement_communities(item_G, item_membership, confusion, item_modularity,
+                                     item_nmi, paths.figures / "fig8_statement_communities.png")
+    plots.fig_alluvial(flow_t, flow_e, paths.figures / "fig9_community_flow.png")
+    print("[12] figures written")
 
     (paths.outputs / "role3_analysis_summary.json").write_text(
         json.dumps(to_builtin(M), indent=2), encoding="utf-8")

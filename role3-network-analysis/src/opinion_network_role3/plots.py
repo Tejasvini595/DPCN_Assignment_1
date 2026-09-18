@@ -14,6 +14,10 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from matplotlib.lines import Line2D
+from matplotlib.path import Path
+from matplotlib.patches import PathPatch, Rectangle
+
+from .analysis import DOMAINS, DOMAIN_COLORS
 
 plt.rcParams.update({
     "font.family": "DejaVu Sans",
@@ -171,16 +175,158 @@ def fig_statement_fdr(fdr_table, threshold_edges: int, out_path) -> None:
 
 
 def fig_intensity_vs_centrality(centrality: pd.DataFrame, out_path) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(7.4, 3.2))
+    fig, axes = plt.subplots(1, 3, figsize=(10.6, 3.2))
     axes[0].scatter(centrality["intensity"], centrality["degree"], color="#4C78A8", s=30, alpha=0.8)
     axes[0].set_xlabel("intensity (mean answer)")
     axes[0].set_ylabel("degree")
     axes[0].set_title("Enthusiasm vs. connectivity")
 
-    axes[1].scatter(centrality["distance_to_class_mean"], centrality["betweenness"],
-                     color="#C44E52", s=30, alpha=0.8)
+    axes[1].scatter(centrality["distance_to_class_mean"], centrality["eigenvector"],
+                     color="#54A24B", s=30, alpha=0.8)
     axes[1].set_xlabel("distance from class-mean profile (atypicality)")
-    axes[1].set_ylabel("betweenness centrality")
-    axes[1].set_title("Atypicality vs. brokerage")
+    axes[1].set_ylabel("eigenvector centrality")
+    axes[1].set_title("Atypicality vs. influence\n(strongest relationship, r=-0.30)")
+
+    axes[2].scatter(centrality["distance_to_class_mean"], centrality["betweenness"],
+                     color="#C44E52", s=30, alpha=0.8)
+    axes[2].set_xlabel("distance from class-mean profile (atypicality)")
+    axes[2].set_ylabel("betweenness centrality")
+    axes[2].set_title("Atypicality vs. brokerage")
     fig.tight_layout()
+    _save(fig, out_path)
+
+
+def fig_statement_communities(G: nx.Graph, membership: dict, confusion: pd.DataFrame,
+                               modularity: float, nmi: float, out_path) -> None:
+    """Louvain communities on the FDR-corrected statement network, next to a
+    confusion matrix against the survey's own T/E/S/V categories.
+
+    Many items have zero FDR-significant edges (isolates). A plain spring
+    layout on a disconnected graph drifts those arbitrarily far from the
+    connected core and wastes most of the panel on whitespace, so isolated
+    items are laid out separately in a tidy row instead of being left to the
+    force layout.
+    """
+
+    connected_nodes = [n for n in G.nodes() if G.degree(n) > 0]
+    isolated_nodes = [n for n in G.nodes() if G.degree(n) == 0]
+    core = G.subgraph(connected_nodes)
+    pos = nx.spring_layout(core, seed=42, weight="weight", iterations=400, k=0.5) if connected_nodes else {}
+    if isolated_nodes:
+        y = min((p[1] for p in pos.values()), default=0.0) - 0.3
+        x_span = np.linspace(-1, 1, len(isolated_nodes))
+        for x, n in zip(x_span, isolated_nodes):
+            pos[n] = np.array([x, y])
+
+    fig, axes = plt.subplots(1, 2, figsize=(9.6, 4.6), gridspec_kw={"width_ratios": [1.3, 1]})
+    ax = axes[0]
+    nodes = list(G.nodes())
+    colors = [COMMUNITY_PALETTE[membership[n] % len(COMMUNITY_PALETTE)] for n in nodes]
+    weights = np.array([d.get("weight", 0.3) for _, _, d in G.edges(data=True)])
+    widths = 0.3 + 1.2 * (weights - weights.min()) / (weights.max() - weights.min() + 1e-9) if len(weights) else []
+    nx.draw_networkx_edges(G, pos, ax=ax, width=widths if len(widths) else 0.3, edge_color="#999999", alpha=0.3)
+    nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_color=colors, node_size=60,
+                            edgecolors="white", linewidths=0.4, ax=ax)
+    ax.set_title(f"Statement network coloured by algorithmic\ncommunity (modularity={modularity:.2f})")
+    ax.axis("off")
+
+    im = axes[1].imshow(confusion.to_numpy(), cmap="Blues", aspect="auto")
+    axes[1].set_xticks(range(confusion.shape[1]))
+    axes[1].set_xticklabels([f"C{c}" for c in confusion.columns], fontsize=6.5)
+    axes[1].set_yticks(range(confusion.shape[0]))
+    axes[1].set_yticklabels([DOMAINS[d] for d in confusion.index], fontsize=7)
+    axes[1].set_xlabel("algorithmic community")
+    axes[1].set_title(f"Survey domain vs. algorithmic\ncommunity (NMI={nmi:.2f})")
+    for i in range(confusion.shape[0]):
+        for j in range(confusion.shape[1]):
+            v = confusion.to_numpy()[i, j]
+            if v > 0:
+                axes[1].text(j, i, str(v), ha="center", va="center", fontsize=7,
+                             color="white" if v > confusion.to_numpy().max() / 2 else "black")
+    fig.colorbar(im, ax=axes[1], fraction=0.046, pad=0.04)
+    fig.tight_layout()
+    _save(fig, out_path)
+
+
+def _bezier_band(ax, x0, y0_top, y0_bot, x1, y1_top, y1_bot, color, alpha=0.55) -> None:
+    xm = (x0 + x1) / 2
+    verts = [
+        (x0, y0_top), (xm, y0_top), (xm, y1_top), (x1, y1_top),
+        (x1, y1_bot), (xm, y1_bot), (xm, y0_bot), (x0, y0_bot),
+        (x0, y0_top),
+    ]
+    codes = [Path.MOVETO, Path.CURVE4, Path.CURVE4, Path.CURVE4,
+             Path.LINETO, Path.CURVE4, Path.CURVE4, Path.CURVE4, Path.CLOSEPOLY]
+    ax.add_patch(PathPatch(Path(verts, codes), facecolor=color, edgecolor="none", alpha=alpha))
+
+
+def _draw_alluvial(ax, flow: pd.DataFrame, left_title: str, right_title: str) -> None:
+    """One alluvial (Sankey-style) panel: left blocks = source communities,
+    right blocks = target communities, ribbon width = number of respondents
+    making that transition. Ribbons are coloured by their source community.
+    """
+
+    left_totals = flow.groupby("source")["count"].sum().sort_values(ascending=False)
+    right_totals = flow.groupby("target")["count"].sum().sort_values(ascending=False)
+    left_cats, right_cats = list(left_totals.index), list(right_totals.index)
+    right_rank = {c: i for i, c in enumerate(right_cats)}
+
+    gap = 0.03 * flow["count"].sum()
+
+    def block_positions(cats, totals):
+        pos, y = {}, 0.0
+        for c in cats:
+            pos[c] = y
+            y += totals[c] + gap
+        return pos, y - gap
+
+    left_start, left_h = block_positions(left_cats, left_totals)
+    right_start, right_h = block_positions(right_cats, right_totals)
+    total_h = max(left_h, right_h)
+
+    color_map = {c: COMMUNITY_PALETTE[i % len(COMMUNITY_PALETTE)] for i, c in enumerate(left_cats)}
+    left_cursor = dict(left_start)
+    right_cursor = dict(right_start)
+
+    for lc in left_cats:
+        sub = flow[flow["source"] == lc].sort_values("target", key=lambda s: s.map(right_rank))
+        for _, row in sub.iterrows():
+            h = row["count"]
+            y0_top, y0_bot = left_cursor[lc], left_cursor[lc] + h
+            left_cursor[lc] += h
+            rc = row["target"]
+            y1_top, y1_bot = right_cursor[rc], right_cursor[rc] + h
+            right_cursor[rc] += h
+            _bezier_band(ax, 0.06, y0_top, y0_bot, 0.94, y1_top, y1_bot, color_map[lc])
+
+    for c in left_cats:
+        y0 = left_start[c]
+        ax.add_patch(Rectangle((0.0, y0), 0.06, left_totals[c], facecolor=color_map[c], edgecolor="white"))
+        ax.text(-0.02, y0 + left_totals[c] / 2, f"Main {c} (n={left_totals[c]})",
+                ha="right", va="center", fontsize=6.5)
+    for c in right_cats:
+        y0 = right_start[c]
+        ax.add_patch(Rectangle((0.94, y0), 0.06, right_totals[c], facecolor="#BBBBBB", edgecolor="white"))
+        ax.text(1.02, y0 + right_totals[c] / 2, f"{c} (n={right_totals[c]})",
+                ha="left", va="center", fontsize=6.5)
+
+    ax.set_xlim(-0.35, 1.35)
+    ax.set_ylim(-gap, total_h + gap)
+    ax.invert_yaxis()
+    ax.set_title(f"{left_title} → {right_title}")
+    ax.axis("off")
+
+
+def fig_alluvial(flow_t: pd.DataFrame, flow_e: pd.DataFrame, out_path) -> None:
+    """Alluvial diagrams tracking respondents from their Main-network
+    community into their Technology-layer and Education-layer communities --
+    a visual counterpart to the Mantel/NMI finding that camps are topic
+    specific, not general.
+    """
+
+    fig, axes = plt.subplots(1, 2, figsize=(9.6, 5.6))
+    _draw_alluvial(axes[0], flow_t, "Main community", "Technology community")
+    _draw_alluvial(axes[1], flow_e, "Main community", "Education community")
+    fig.suptitle("Where each Main-network community's respondents land in a topic layer", fontsize=10, fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
     _save(fig, out_path)

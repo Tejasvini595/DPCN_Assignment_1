@@ -52,5 +52,10 @@
     "fdr_significant": 432,
     "role2_threshold_edges": 189,
     "overlap_threshold_and_fdr": 189
+  },
+  "statement_communities": {
+    "n_communities": 7,
+    "modularity": 0.20659489784592924,
+    "nmi_vs_survey_domains": 0.5593696793873895
   }
 }

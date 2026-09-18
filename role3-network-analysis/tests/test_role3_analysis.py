@@ -79,3 +79,36 @@ def test_knn_graph_matches_role1_role2_construction():
     G = an.knn_graph(S, k=4, labels=range(30))
     assert min(d for _, d in G.degree()) >= 4
     assert all(d["weight"] > 0 for *_, d in G.edges(data=True))
+
+
+def test_statement_network_communities_confusion_matrix_sums_to_60():
+    paths = an.Role3Paths(ROOT)
+    data = an.read_inputs(paths)
+    spearman_pvals = an.spearman_with_pvalues(data["prepared_responses"])
+    fdr_table = an.fdr_statement_network(spearman_pvals)
+    G, membership, modularity, confusion, nmi = an.statement_network_communities(
+        fdr_table, data["codebook"])
+    assert G.number_of_nodes() == 60
+    assert confusion.to_numpy().sum() == 60
+    assert 0.0 <= nmi <= 1.0001
+
+
+def test_sankey_flow_counts_match_node_count():
+    nodes = list(range(10))
+    part_a = {n: n % 2 for n in nodes}
+    part_b = {n: n % 3 for n in nodes}
+    flow = an.sankey_flow(part_a, part_b, nodes)
+    assert flow["count"].sum() == len(nodes)
+    assert set(flow.columns) == {"source", "target", "count"}
+
+
+def test_compare_layers_returns_partitions_and_common_nodes():
+    paths = an.Role3Paths(ROOT)
+    data = an.read_inputs(paths)
+    G = an.load_role2_graph(paths)
+    _, membership, _ = an.detect_communities(G)
+    mantel_df, nmi_df, partitions, common = an.compare_layers(
+        paths, data["network_sample"], data["similarity"], membership)
+    assert len(common) == 85
+    assert set(partitions.keys()) == {"Main", "T", "E", "S", "V"}
+    assert all(n in partitions["Main"] for n in common)
